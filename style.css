@@ -512,56 +512,115 @@ body {
 }
 
 /* ===== FINAL Cake (OUTSIDE envelope) ===== */
-.stage{ position:relative; }
+.stage {
+    position: relative;
+}
 
 /* เค้กจะอยู่นอกซอง -> ใช้ .cake-out เท่านั้น */
-.cake-out{
-  position:absolute;
-  left:50%;
-  top:140px; /* ปรับสูง-ต่ำได้ */
+.cake-out {
+    position: absolute;
+    left: 50%;
+    top: 140px;
+    /* ปรับสูง-ต่ำได้ */
 
-  transform: translateX(-50%) translateY(40px) scale(.95);
-  opacity:0;
+    transform: translateX(-50%) translateY(40px) scale(.95);
+    opacity: 0;
 
-  z-index:30;
-  pointer-events:none;
-  transition: transform .8s cubic-bezier(.2,.9,.2,1), opacity .25s ease;
+    z-index: 30;
+    pointer-events: none;
+    transition: transform .8s cubic-bezier(.2, .9, .2, 1), opacity .25s ease;
 
-  filter:
-    drop-shadow(0 18px 22px rgba(0,0,0,.18))
-    drop-shadow(0 0 18px rgba(47,191,255,.22));
+    filter:
+        drop-shadow(0 18px 22px rgba(0, 0, 0, .18)) drop-shadow(0 0 18px rgba(47, 191, 255, .22));
 }
 
 /* เปิดซองแล้วเค้กโผล่ออกมา (เห็นเต็ม ไม่โดนครอป) */
-.cake-out.show{
-  opacity:1;
-  transform: translateX(-50%) translateY(-10px) scale(1.05);
-  animation: cakeFloat 3s ease-in-out infinite;
+.cake-out.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-10px) scale(1.05);
+    animation: cakeFloat 3s ease-in-out infinite;
 }
 
 /* ลอยเบาๆ */
-@keyframes cakeFloat{
-  0%,100%{ transform: translateX(-50%) translateY(-10px) scale(1.05); }
-  50%{ transform: translateX(-50%) translateY(-22px) scale(1.07); }
+@keyframes cakeFloat {
+
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(-10px) scale(1.05);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(-22px) scale(1.07);
+    }
 }
 
 /* sparkle รอบเค้ก (ย้ายจาก .cake มาไว้กับ .cake-out) */
-.cake-out::after{
-  content:"";
-  position:absolute;
-  inset:-28px;
-  background:
-    radial-gradient(circle, rgba(255,255,255,.85) 2px, transparent 3px),
-    radial-gradient(circle, rgba(47,191,255,.85) 2px, transparent 3px);
-  background-size: 40px 40px, 60px 60px;
-  animation: sparkle 4s linear infinite;
-  opacity:.55;
-  pointer-events:none;
+.cake-out::after {
+    content: "";
+    position: absolute;
+    inset: -28px;
+    background:
+        radial-gradient(circle, rgba(255, 255, 255, .85) 2px, transparent 3px),
+        radial-gradient(circle, rgba(47, 191, 255, .85) 2px, transparent 3px);
+    background-size: 40px 40px, 60px 60px;
+    animation: sparkle 4s linear infinite;
+    opacity: .55;
+    pointer-events: none;
 }
 
-@keyframes sparkle{
-  0%{ transform: rotate(0deg); }
-  100%{ transform: rotate(360deg); }
+@keyframes sparkle {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
+.countdown {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 
+    z-index: 50;
+    pointer-events: none;
+
+    backdrop-filter: blur(6px);
+    background: radial-gradient(circle, rgba(255, 255, 255, .75), rgba(47, 191, 255, .10));
+    border-radius: 22px;
+}
+
+.countdown.hidden {
+    display: none;
+}
+
+.count-num {
+    font-size: 72px;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--blue);
+    text-shadow: 0 0 24px rgba(47, 191, 255, .35);
+    animation: pop .6s ease;
+}
+
+.count-text {
+    font-size: 16px;
+    opacity: .85;
+}
+
+@keyframes pop {
+    0% {
+        transform: scale(.7);
+        opacity: .2;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}

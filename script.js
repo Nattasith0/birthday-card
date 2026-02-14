@@ -1,7 +1,12 @@
 const envelope = document.getElementById("envelope");
 const music = document.getElementById("music");
 const cake = document.getElementById("cake");
+const countdownEl = document.getElementById("countdown");
+const countNumEl = countdownEl?.querySelector(".count-num");
+const countTextEl = countdownEl?.querySelector(".count-text");
 
+
+let isCounting = false;
 
 const canvas = document.getElementById("fx");
 const ctx = canvas.getContext("2d");
@@ -104,19 +109,56 @@ function tryPlayMusic() {
 }
 
 function toggleOpen() {
-    envelope.classList.toggle("open");
-    const isOpen = envelope.classList.contains("open");
+    // ถ้ากำลังนับอยู่ ให้ไม่ทำซ้ำ
+    if (isCounting) return;
 
-    // ✅ เค้กนอกซอง: โชว์เมื่อเปิด
-    cake.classList.toggle("show", isOpen);
+    // ถ้าซองเปิดอยู่แล้ว ให้ปิดได้ทันที (ไม่ต้องนับ)
+    if (envelope.classList.contains("open")) {
+        envelope.classList.remove("open");
+        // ถ้ามีเค้กนอกซอง:
+        if (typeof cake !== "undefined" && cake) cake.classList.remove("show");
+        return;
+    }
 
-    if (isOpen) {
+    // เริ่มนับถอยหลัง
+    isCounting = true;
+    let n = 3;
+
+    countdownEl.classList.remove("hidden");
+    countNumEl.textContent = n;
+    countTextEl.textContent = "Ready? 🎁";
+
+    const tick = () => {
+        n -= 1;
+
+        if (n > 0) {
+            countNumEl.textContent = n;
+            countNumEl.style.animation = "none";
+            // รีสตาร์ทอนิเมชัน pop
+            void countNumEl.offsetWidth;
+            countNumEl.style.animation = "pop .6s ease";
+            setTimeout(tick, 650);
+            return;
+        }
+
+        // เปิดซองหลังนับเสร็จ
+        countdownEl.classList.add("hidden");
+        envelope.classList.add("open");
+
+        // ถ้ามีเค้กนอกซอง:
+        if (typeof cake !== "undefined" && cake) cake.classList.add("show");
+
+        // confetti + music (ของเดิม)
         burstConfetti(openedOnce ? 90 : 170);
         if (!openedOnce) {
             openedOnce = true;
-            music.play().catch(() => { });
+            tryPlayMusic();
         }
-    }
+
+        isCounting = false;
+    };
+
+    setTimeout(tick, 650);
 }
 
 envelope.addEventListener("click", toggleOpen);
