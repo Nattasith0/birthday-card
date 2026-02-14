@@ -1,0 +1,567 @@
+:root {
+    --bg1: #eef8ff;
+    --bg2: #ffffff;
+    --ink: #0b2240;
+
+    --blue: #2fbfff;
+    --blue2: #6aa8ff;
+    --ice: #cfefff;
+
+    --card: #ffffff;
+    --cardBorder: rgba(47, 191, 255, .22);
+
+    --envTop: #bfeeff;
+    --envBottom: #8fd6ff;
+    --envEdge: rgba(32, 120, 170, .20);
+
+    --shadow: rgba(10, 30, 60, .12);
+    --shadow2: rgba(10, 30, 60, .22);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Arial;
+    color: var(--ink);
+    background:
+        radial-gradient(1200px 700px at 20% 10%, rgba(47, 191, 255, .18), transparent 60%),
+        radial-gradient(900px 500px at 80% 20%, rgba(106, 168, 255, .18), transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+    overflow: hidden;
+}
+
+/* canvas fx */
+#fx {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+/* layout */
+.wrap {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 18px;
+    text-align: center;
+}
+
+.title {
+    margin: 0 0 6px;
+    font-size: clamp(22px, 2.4vw, 32px);
+}
+
+.sub {
+    margin: 0 0 18px;
+    opacity: .75;
+}
+
+.hearts {
+    margin-left: 6px;
+}
+
+.stage {
+    width: min(520px, 94vw);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 40px;
+    position: relative;
+}
+
+/* envelope */
+.envelope {
+    width: min(480px, 92vw);
+    height: 320px;
+    position: relative;
+    border-radius: 22px;
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+    overflow: hidden;
+    /* สำคัญ: ซ่อนการ์ดตอนปิด */
+    transform: translateZ(0);
+    filter: drop-shadow(0 18px 30px var(--shadow2));
+}
+
+.glow {
+    position: absolute;
+    inset: -18px;
+    border-radius: 28px;
+    background:
+        radial-gradient(closest-side, rgba(47, 191, 255, .55), transparent 65%),
+        radial-gradient(closest-side, rgba(106, 168, 255, .35), transparent 65%);
+    filter: blur(14px);
+    opacity: .95;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* BACK PANEL */
+.back {
+    position: absolute;
+    inset: 0;
+    border-radius: 22px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, .92), rgba(207, 239, 255, .75));
+    border: 1px solid var(--envEdge);
+    z-index: 1;
+}
+
+/* premium sheen */
+.sheen {
+    position: absolute;
+    inset: -40% -60%;
+    background: linear-gradient(120deg,
+            transparent 40%,
+            rgba(255, 255, 255, .55) 48%,
+            transparent 56%);
+    transform: rotate(10deg);
+    opacity: .55;
+    animation: sheen 6.5s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes sheen {
+    0% {
+        transform: translateX(-30%) rotate(10deg);
+        opacity: .0;
+    }
+
+    15% {
+        opacity: .55;
+    }
+
+    50% {
+        transform: translateX(30%) rotate(10deg);
+        opacity: .20;
+    }
+
+    100% {
+        transform: translateX(30%) rotate(10deg);
+        opacity: 0;
+    }
+}
+
+/* address */
+.address {
+    position: absolute;
+    font-size: 13px;
+    opacity: .78;
+    letter-spacing: .2px;
+}
+
+.address.to {
+    left: 18px;
+    top: 14px;
+}
+
+.address.from {
+    left: 18px;
+    top: 34px;
+}
+
+/* stamp */
+.stamp {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background: linear-gradient(145deg, rgba(47, 191, 255, .22), rgba(106, 168, 255, .16));
+    border: 1px solid rgba(47, 191, 255, .35);
+    box-shadow: 0 10px 18px rgba(47, 191, 255, .14);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stamp-inner {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    border: 1px dashed rgba(47, 191, 255, .55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+/* FRONT POCKET */
+.front {
+    position: absolute;
+    inset: 0;
+    border-radius: 22px;
+    background: linear-gradient(180deg, rgba(143, 214, 255, .28), rgba(47, 191, 255, .18));
+    border: 1px solid rgba(47, 191, 255, .25);
+    z-index: 3;
+    clip-path: polygon(0 44%, 50% 76%, 100% 44%, 100% 100%, 0 100%);
+    box-shadow:
+        inset 0 14px 22px rgba(255, 255, 255, .35),
+        inset 0 -8px 18px rgba(0, 0, 0, .08);
+}
+
+/* FLAP */
+.flap {
+    position: absolute;
+    inset: 0;
+    border-radius: 22px;
+    background: linear-gradient(180deg, var(--envTop), var(--envBottom));
+    border: 1px solid rgba(47, 191, 255, .35);
+    clip-path: polygon(0 0, 100% 0, 50% 58%);
+    transform-origin: top;
+    transition: transform .9s cubic-bezier(.2, .9, .2, 1);
+    z-index: 4;
+    box-shadow: 0 0 26px rgba(47, 191, 255, .25);
+}
+
+.flap::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, .12), transparent 60%);
+    clip-path: inherit;
+    border-radius: 22px;
+}
+
+/* LETTER (inside envelope) */
+.letter {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 92%;
+    height: 240px;
+    transform: translateX(-50%) translateY(140%);
+    transition: transform .9s cubic-bezier(.2, .9, .2, 1);
+    z-index: 4;
+}
+
+.paper {
+    height: 100%;
+    background: var(--card);
+    border: 1px solid var(--cardBorder);
+    border-radius: 18px;
+    box-shadow: 0 14px 30px var(--shadow);
+    padding: 60px 16px 14px;
+    text-align: left;
+    overflow: hidden;
+}
+
+.top {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.text h2 {
+    margin: 0 0 8px;
+    font-size: 22px;
+    line-height: 1.1;
+}
+
+.name {
+    color: var(--blue);
+    text-shadow: 0 0 16px rgba(47, 191, 255, .35);
+}
+
+.wish {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #173454;
+}
+
+.photo {
+    width: 78px;
+    height: 78px;
+    border-radius: 18px;
+    object-fit: cover;
+    border: 2px solid rgba(47, 191, 255, .25);
+    box-shadow: 0 10px 18px rgba(47, 191, 255, .16);
+}
+
+.divider {
+    margin-top: 14px;
+    border-top: 1px dashed rgba(47, 191, 255, .25);
+}
+
+.sign {
+    margin: 12px 0 0;
+    opacity: .85;
+}
+
+/* WAX SEAL (shows when closed, fades when open) */
+.seal {
+    position: absolute;
+    left: 50%;
+    top: 176px;
+    transform: translateX(-50%);
+    width: 64px;
+    height: 64px;
+    border-radius: 999px;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, .55), rgba(47, 191, 255, .95));
+    border: 1px solid rgba(255, 255, 255, .45);
+    box-shadow: 0 18px 28px rgba(47, 191, 255, .22);
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity .35s ease, transform .6s cubic-bezier(.2, .9, .2, 1);
+}
+
+.seal-icon {
+    font-size: 20px;
+    filter: drop-shadow(0 8px 12px rgba(0, 0, 0, .12));
+}
+
+/* CAKE (hidden until open) */
+.cake {
+    position: absolute;
+    left: 50%;
+
+    /* ย้ายจุดเริ่มต้นสูงขึ้น */
+    top: 78px;
+    bottom: auto;
+
+    transform: translateX(-50%) translateY(30px) scale(.9);
+    opacity: 0;
+
+    z-index: 10;
+    pointer-events: none;
+    transition: transform .8s cubic-bezier(.2, .9, .2, 1), opacity .35s ease;
+    filter: drop-shadow(0 12px 18px rgba(0, 0, 0, .15));
+}
+
+/* OPEN STATE */
+.envelope.open .flap {
+    transform: rotateX(180deg);
+}
+
+.envelope.open .letter {
+    transform: translateX(-50%) translateY(-2%);
+}
+
+.envelope.open .seal {
+    opacity: 0;
+    transform: translateX(-50%) scale(.85);
+}
+
+.envelope.open .cake {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-10px) scale(1.05);
+    animation: cakeFloat 3s ease-in-out infinite;
+    overflow: visible;
+}
+
+/* ===== Premium++ Cake ===== */
+
+.cake {
+    position: absolute;
+    left: 50%;
+    top: 70px;
+    /* สูงขึ้น */
+    bottom: auto;
+
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px) scale(.92);
+
+    z-index: 10;
+    pointer-events: none;
+    transition: transform .8s cubic-bezier(.2, .9, .2, 1), opacity .25s ease;
+    filter: drop-shadow(0 18px 22px rgba(0, 0, 0, .18));
+}
+
+/* open */
+.envelope.open .cake {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0px) scale(1);
+    animation: cakeFloat 3s ease-in-out infinite;
+}
+
+/* cake float */
+@keyframes cakeFloat {
+
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(-150px);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(-165px);
+    }
+}
+
+/* cake body */
+.cake-body {
+    width: 80px;
+    height: 50px;
+    background: linear-gradient(#ffd8a8, #ffb97a);
+    border-radius: 12px;
+    position: relative;
+    box-shadow: 0 12px 18px rgba(0, 0, 0, .18);
+}
+
+/* icing */
+.cake-body::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 0;
+    width: 100%;
+    height: 16px;
+    background: #fff;
+    border-radius: 12px;
+}
+
+/* candles container */
+.candles {
+    position: absolute;
+    top: -26px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+}
+
+/* candle */
+.candle {
+    width: 8px;
+    height: 22px;
+    background: linear-gradient(#fff, #cfefff);
+    border-radius: 4px;
+    position: relative;
+}
+
+/* flame */
+.flame {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 14px;
+    background: radial-gradient(circle at 50% 30%, #fff, #ffd36a 60%, #ff9a00);
+    border-radius: 50% 50% 50% 50%;
+    filter: blur(.4px);
+
+    animation: flicker .18s infinite alternate;
+}
+
+/* flame flicker */
+@keyframes flicker {
+    0% {
+        transform: translateX(-50%) scale(1) rotate(-2deg);
+        opacity: .9;
+    }
+
+    100% {
+        transform: translateX(-50%) scale(1.25) rotate(2deg);
+        opacity: 1;
+    }
+}
+
+/* glow around flame */
+.flame::after {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    background: radial-gradient(circle, rgba(255, 210, 80, .45), transparent 70%);
+    border-radius: 50%;
+}
+
+/* sparkle around cake */
+.cake::after {
+    content: "";
+    position: absolute;
+    inset: -30px;
+    background:
+        radial-gradient(circle, rgba(255, 255, 255, .8) 2px, transparent 3px),
+        radial-gradient(circle, rgba(47, 191, 255, .8) 2px, transparent 3px);
+    background-size: 40px 40px, 60px 60px;
+    animation: sparkle 4s linear infinite;
+    opacity: .6;
+    pointer-events: none;
+}
+
+
+@keyframes cakeFloat {
+
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(-10px) scale(1.05);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(-20px) scale(1.07);
+    }
+}
+
+/* ===== FINAL Cake (OUTSIDE envelope) ===== */
+.stage{ position:relative; }
+
+/* เค้กจะอยู่นอกซอง -> ใช้ .cake-out เท่านั้น */
+.cake-out{
+  position:absolute;
+  left:50%;
+  top:140px; /* ปรับสูง-ต่ำได้ */
+
+  transform: translateX(-50%) translateY(40px) scale(.95);
+  opacity:0;
+
+  z-index:30;
+  pointer-events:none;
+  transition: transform .8s cubic-bezier(.2,.9,.2,1), opacity .25s ease;
+
+  filter:
+    drop-shadow(0 18px 22px rgba(0,0,0,.18))
+    drop-shadow(0 0 18px rgba(47,191,255,.22));
+}
+
+/* เปิดซองแล้วเค้กโผล่ออกมา (เห็นเต็ม ไม่โดนครอป) */
+.cake-out.show{
+  opacity:1;
+  transform: translateX(-50%) translateY(-10px) scale(1.05);
+  animation: cakeFloat 3s ease-in-out infinite;
+}
+
+/* ลอยเบาๆ */
+@keyframes cakeFloat{
+  0%,100%{ transform: translateX(-50%) translateY(-10px) scale(1.05); }
+  50%{ transform: translateX(-50%) translateY(-22px) scale(1.07); }
+}
+
+/* sparkle รอบเค้ก (ย้ายจาก .cake มาไว้กับ .cake-out) */
+.cake-out::after{
+  content:"";
+  position:absolute;
+  inset:-28px;
+  background:
+    radial-gradient(circle, rgba(255,255,255,.85) 2px, transparent 3px),
+    radial-gradient(circle, rgba(47,191,255,.85) 2px, transparent 3px);
+  background-size: 40px 40px, 60px 60px;
+  animation: sparkle 4s linear infinite;
+  opacity:.55;
+  pointer-events:none;
+}
+
+@keyframes sparkle{
+  0%{ transform: rotate(0deg); }
+  100%{ transform: rotate(360deg); }
+}
+
+

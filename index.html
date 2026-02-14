@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="th">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Birthday Letter for Ying 💌</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <canvas id="fx"></canvas>
+
+  <main class="wrap">
+    <h1 class="title">มีจดหมายวันเกิดถึงคุณ <span class="hearts">🤍💙</span></h1>
+    <p class="sub">แตะซองเพื่อเปิด</p>
+
+    <section class="stage">
+      <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Open envelope">
+        <div class="glow"></div>
+
+        <!-- BACK PANEL -->
+        <div class="back">
+          <div class="sheen" aria-hidden="true"></div>
+
+          <!-- Premium details -->
+          <div class="address to">To: <b>Ying</b></div>
+
+          <div class="stamp" aria-hidden="true">
+            <div class="stamp-inner">💙</div>
+          </div>
+        </div>
+
+        <!-- LETTER (starts hidden inside envelope) -->
+        <div class="letter" id="letter">
+          <div class="paper">
+            <div class="top">
+              <div class="text">
+                <h2>Happy Birthday, <span class="name">Ying</span>! </h2>
+                <p class="wish">
+                  สุขสันต์วันเกิดน้าาา<br />
+                  ขอให้ปีนี้เป็นปีที่ดี มีความสุขสมหวังในทุก ๆ เรื่อง และสุขภาพแข็งแรงครับ
+                </p>
+              </div>
+              <img class="photo" src="ying.png" alt="Ying photo">
+            </div>
+
+            <div class="divider"></div>
+            <p class="sign">— From I Gun 💌</p>
+          </div>
+        </div>
+
+        <!-- FLAP + FRONT POCKET -->
+        <div class="flap"></div>
+        <div class="front"></div>
+
+        <!-- WAX SEAL -->
+        <div class="seal" aria-hidden="true">
+          <span class="seal-icon">✉️</span>
+        </div>
+
+        <!-- CAKE -->
+        <div class="cake" id="cake">
+          <div class="cake-body"></div>
+          <div class="candles">
+            <div class="candle">
+              <div class="flame"></div>
+            </div>
+            <div class="candle">
+              <div class="flame"></div>
+            </div>
+            <div class="candle">
+              <div class="flame"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- music plays on first open -->
+  <audio id="music" src="happy-birthday.mp3" loop preload="auto"></audio>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
