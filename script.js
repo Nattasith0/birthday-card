@@ -5,9 +5,10 @@ const countdownEl = document.getElementById("countdown");
 const countNumEl = countdownEl?.querySelector(".count-num");
 const countTextEl = countdownEl?.querySelector(".count-text");
 
-
 let isCounting = false;
+let openedOnce = false;
 
+/* ---- FX: Canvas Setup ---- */
 const canvas = document.getElementById("fx");
 const ctx = canvas.getContext("2d");
 
@@ -19,152 +20,166 @@ function resize() {
 window.addEventListener("resize", resize);
 resize();
 
-/* ---- FX: snow/blue sparkles + confetti ---- */
-const snow = [];
-const confetti = [];
 const rand = (a, b) => Math.random() * (b - a) + a;
 
-function makeSnow(n = 110) {
-    snow.length = 0;
+/* ---- FX: Particles (Subtle floating sparkles) ---- */
+const particles = [];
+function makeParticles(n = 80) {
+    particles.length = 0;
     for (let i = 0; i < n; i++) {
-        snow.push({
+        particles.push({
             x: rand(0, window.innerWidth),
-            y: rand(-window.innerHeight, window.innerHeight),
-            r: rand(0.8, 2.4),
-            sp: rand(0.6, 2.2),
-            drift: rand(-0.5, 0.5),
-            a: rand(0.25, 0.85),
-            hue: Math.random() < 0.65 ? 200 : 210
+            y: rand(0, window.innerHeight),
+            size: rand(0.5, 2),
+            speedY: rand(-0.2, -0.8), // Float up
+            speedX: rand(-0.2, 0.2),
+            alpha: rand(0.3, 0.8),
+            color: Math.random() < 0.5 ? "255, 255, 255" : "59, 130, 246" // White or Blue
         });
     }
 }
-makeSnow();
+makeParticles();
 
-function burstConfetti(count = 140) {
+/* ---- FX: Confetti (Gold & Blue) ---- */
+const confetti = [];
+function burstConfetti(count = 150) {
+    const colors = [
+        "#3b82f6", // Royal Blue
+        "#f59e0b", // Gold
+        "#ffffff", // White
+        "#60a5fa"  // Lighter Blue
+    ];
+    
     for (let i = 0; i < count; i++) {
-        const isWhite = Math.random() < 0.45;
         confetti.push({
-            x: window.innerWidth / 2 + rand(-20, 20),
-            y: window.innerHeight / 2 + rand(-40, 40),
-            vx: rand(-6.5, 6.5),
-            vy: rand(-10.5, -3.5),
-            g: rand(0.18, 0.35),
-            w: rand(4, 9),
-            h: rand(6, 14),
-            rot: rand(0, Math.PI * 2),
-            vr: rand(-0.22, 0.22),
-            life: rand(70, 120),
-            color: isWhite ? "rgba(255,255,255,.95)" :
-                (Math.random() < 0.5 ? "rgba(47,191,255,.95)" : "rgba(106,168,255,.95)")
+            x: window.innerWidth / 2,
+            y: window.innerHeight / 2,
+            vx: rand(-10, 10),
+            vy: rand(-15, 5),
+            gravity: 0.25,
+            rotation: rand(0, 360),
+            rotationSpeed: rand(-5, 5),
+            size: rand(6, 12),
+            color: colors[Math.floor(Math.random() * colors.length)],
+            life: 1.0,
+            decay: rand(0.005, 0.015)
         });
     }
 }
 
-function draw() {
+function updateDraw() {
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-    // snow/sparkles
-    for (const p of snow) {
-        p.y += p.sp;
-        p.x += p.drift;
-        if (p.y > window.innerHeight + 10) { p.y = -10; p.x = rand(0, window.innerWidth); }
-        if (p.x < -10) p.x = window.innerWidth + 10;
-        if (p.x > window.innerWidth + 10) p.x = -10;
+    // Draw Background Particles (p)
+    for (let i = 0; i < particles.length; i++) {
+        let p = particles[i];
+        p.y += p.speedY; // Move up
+        p.x += p.speedX; // Drift horizontally
 
+        // If particle goes off screen top, reset to bottom
+        if (p.y < -10) {
+            p.y = window.innerHeight + 10;
+            p.x = rand(0, window.innerWidth);
+        }
+        
+        ctx.fillStyle = `rgba(${p.color}, ${p.alpha})`;
         ctx.beginPath();
-        ctx.fillStyle = p.hue === 200 ? `rgba(47,191,255,${p.a})` : `rgba(255,255,255,${p.a})`;
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fill();
     }
 
-    // confetti
+    // Draw Confetti (c)
     for (let i = confetti.length - 1; i >= 0; i--) {
-        const c = confetti[i];
-        c.vy += c.g;
+        let c = confetti[i];
+        
         c.x += c.vx;
         c.y += c.vy;
-        c.rot += c.vr;
-        c.life -= 1;
+        c.vy += c.gravity * 0.5; // Slower gravity
+        c.rotation += c.rotationSpeed;
+        c.life -= c.decay;
+
+        if (c.life <= 0 || c.y > window.innerHeight + 20) {
+            confetti.splice(i, 1);
+            continue;
+        }
 
         ctx.save();
         ctx.translate(c.x, c.y);
-        ctx.rotate(c.rot);
+        ctx.rotate(c.rotation * Math.PI / 180);
         ctx.fillStyle = c.color;
-        ctx.fillRect(-c.w / 2, -c.h / 2, c.w, c.h);
+        
+        ctx.globalAlpha = c.life;
+        ctx.fillRect(-c.size / 2, -c.size / 2, c.size, c.size);
         ctx.restore();
-
-        if (c.life <= 0 || c.y > window.innerHeight + 80) confetti.splice(i, 1);
     }
 
-    requestAnimationFrame(draw);
+    requestAnimationFrame(updateDraw);
 }
-draw();
+updateDraw();
 
-/* ---- Envelope interactions + music ---- */
-let openedOnce = false;
 
-function tryPlayMusic() {
-    // มือถือจะเล่นได้เพราะเกิดจากการคลิก
-    music.play().catch(() => { });
-}
-
-function toggleOpen() {
-    // ถ้ากำลังนับอยู่ ให้ไม่ทำซ้ำ
-    if (isCounting) return;
-
-    // ถ้าซองเปิดอยู่แล้ว ให้ปิดได้ทันที (ไม่ต้องนับ)
-    if (envelope.classList.contains("open")) {
-        envelope.classList.remove("open");
-        // ถ้ามีเค้กนอกซอง:
-        if (typeof cake !== "undefined" && cake) cake.classList.remove("show");
-        return;
+/* ---- Logic: Envelope Open ---- */
+function openEnvelope() {
+    if (envelope.classList.contains("open")) return;
+    
+    // 1. Play Music
+    if (!openedOnce) {
+        music.play().then(() => {
+            console.log("Music playing");
+        }).catch(e => {
+            console.log("Auto-play prevented:", e);
+        });
+        openedOnce = true;
     }
 
-    // เริ่มนับถอยหลัง
+    // 2. Add class to animate CSS
+    envelope.classList.add("open");
+    
+    // 3. Burst Confetti
+    for(let i=0; i<3; i++) {
+        setTimeout(() => burstConfetti(100), i * 300);
+    }
+    
+    // 4. Hide Countdown
+    if(countdownEl) countdownEl.classList.add("hidden");
+    isCounting = false;
+}
+
+function startCountdown() {
+    if (isCounting || envelope.classList.contains("open")) return;
     isCounting = true;
-    let n = 3;
 
-    countdownEl.classList.remove("hidden");
-    countNumEl.textContent = n;
-    countTextEl.textContent = "Ready? 🎁";
+    // Show countdown overlay
+    if(countdownEl) countdownEl.classList.remove("hidden");
+    
+    let count = 3;
+    if(countNumEl) countNumEl.textContent = count;
+    if(countTextEl) countTextEl.textContent = "Are you ready? ✨";
 
     const tick = () => {
-        n -= 1;
+        countNumEl.style.transform = "scale(1.3)";
+        setTimeout(() => countNumEl.style.transform = "scale(1)", 200);
 
-        if (n > 0) {
-            countNumEl.textContent = n;
-            countNumEl.style.animation = "none";
-            // รีสตาร์ทอนิเมชัน pop
-            void countNumEl.offsetWidth;
-            countNumEl.style.animation = "pop .6s ease";
-            setTimeout(tick, 650);
-            return;
+        if (count > 0) {
+            countNumEl.textContent = count;
+            count--;
+            setTimeout(tick, 1000);
+        } else {
+            countNumEl.textContent = "Enjoy! 🎂";
+            setTimeout(() => {
+                openEnvelope();
+            }, 500);
         }
-
-        // เปิดซองหลังนับเสร็จ
-        countdownEl.classList.add("hidden");
-        envelope.classList.add("open");
-
-        // ถ้ามีเค้กนอกซอง:
-        if (typeof cake !== "undefined" && cake) cake.classList.add("show");
-
-        // confetti + music (ของเดิม)
-        burstConfetti(openedOnce ? 90 : 170);
-        if (!openedOnce) {
-            openedOnce = true;
-            tryPlayMusic();
-        }
-
-        isCounting = false;
     };
-
-    setTimeout(tick, 650);
+    tick();
 }
 
-envelope.addEventListener("click", toggleOpen);
-envelope.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        toggleOpen();
+// Interaction
+envelope.addEventListener("click", () => {
+    if (!envelope.classList.contains("open") && !isCounting) {
+        startCountdown();
+    } else if (envelope.classList.contains("open")) {
+        // Replay confetti on click if already open
+        burstConfetti(50);
     }
 });

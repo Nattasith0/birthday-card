@@ -3,8 +3,14 @@
 
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Birthday Letter for Ying 💌</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Happy Birthday Ying! 🎂</title>
+
+  <!-- Google Fonts: Outfit (Modern & Clean) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -12,45 +18,71 @@
   <canvas id="fx"></canvas>
 
   <main class="wrap">
-    <h1 class="title">มีจดหมายวันเกิดถึงคุณ <span class="hearts">🤍💙</span></h1>
-    <p class="sub">แตะซองเพื่อเปิด</p>
+    <div class="header-content">
+      <h1 class="title">สุขสันต์วันเกิดครับ <span class="gradient-text">Ying</span> 🤍💙</h1>
+      <p class="sub">แตะที่ซองจดหมายเพื่อเปิดของขวัญ</p>
+    </div>
 
     <section class="stage">
+
+      <!-- Countdown Overlay -->
       <div id="countdown" class="countdown hidden" aria-live="polite">
         <div class="count-num">3</div>
-        <div class="count-text">Ready? 🎁</div>
+        <div class="count-text">Are you ready? ✨</div>
       </div>
+
       <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Open envelope">
+
+        <!-- Glow Effect behind envelope -->
         <div class="glow"></div>
 
         <!-- BACK PANEL -->
         <div class="back">
           <div class="sheen" aria-hidden="true"></div>
 
-          <!-- Premium details -->
-          <div class="address to">To: <b>Ying</b></div>
+          <div class="address to">
+            <span class="label">TO:</span>
+            <span class="name">Ying</span>
+          </div>
 
-          <div class="stamp" aria-hidden="true">
-            <div class="stamp-inner">💙</div>
+          <!-- Decorative Stamp -->
+          <div class="stamp">
+            <div class="stamp-inner">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+                <path
+                  d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+              </svg>
+            </div>
           </div>
         </div>
 
-        <!-- LETTER (starts hidden inside envelope) -->
+        <!-- LETTER -->
         <div class="letter" id="letter">
           <div class="paper">
+            <div class="paper-texture"></div>
+
             <div class="top">
               <div class="text">
-                <h2>Happy Birthday, <span class="name">Ying</span>! </h2>
-                <p class="wish">
-                  สุขสันต์วันเกิดน้าาา<br />
-                  ขอให้ปีนี้เป็นปีที่ดี มีความสุขสมหวังในทุก ๆ เรื่อง และสุขภาพแข็งแรงครับ
-                </p>
+                <div class="letter-header">Happy Birthday!</div>
+                <h2 class="recipient-name">Dearest Ying</h2>
+                <div class="body-text">
+                  <p>
+                    สุขสันต์วันเกิดนะครับ ขอให้ปีนี้เป็นปีที่ใจดีกับหญิง<br>
+                    มีรอยยิ้มเยอะๆ สุขภาพแข็งแรง<br>
+                    และสมหวังในทุกสิ่งที่ตั้งใจไว้นะครับ 💙
+                  </p>
+                </div>
               </div>
-              <img class="photo" src="ying.png" alt="Ying photo">
+              <div class="photo-frame">
+                <img class="photo" src="ying.png" alt="Ying photo">
+              </div>
             </div>
 
-            <div class="divider"></div>
-            <p class="sign">— From I Gun 💌</p>
+            <div class="divider">
+              <span>💌</span>
+            </div>
+
+            <p class="sign">จาก I Gun</p>
           </div>
         </div>
 
@@ -60,17 +92,22 @@
 
         <!-- WAX SEAL -->
         <div class="seal" aria-hidden="true">
-          <span class="seal-icon">✉️</span>
+          <span class="seal-icon">✨</span>
         </div>
 
-        <!-- CAKE -->
+        <!-- HIDDEN CAKE (Pop up logic) -->
         <div class="cake" id="cake">
-          <div class="cake-body"></div>
+          <div class="plate"></div>
+          <div class="cake-body">
+            <div class="layer layer-bottom"></div>
+            <div class="layer layer-middle"></div>
+            <div class="icing"></div>
+          </div>
           <div class="candles">
             <div class="candle">
               <div class="flame"></div>
             </div>
-            <div class="candle">
+            <div class="candle center">
               <div class="flame"></div>
             </div>
             <div class="candle">
@@ -78,13 +115,12 @@
             </div>
           </div>
         </div>
+
       </div>
     </section>
   </main>
 
-  <!-- music plays on first open -->
   <audio id="music" src="happy-birthday.mp3" loop preload="auto"></audio>
-
   <script src="script.js"></script>
 </body>
 
