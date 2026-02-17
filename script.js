@@ -175,11 +175,19 @@ function startCountdown() {
 }
 
 // Interaction
-envelope.addEventListener("click", () => {
+const handleInteraction = (e) => {
+    // Prevent double firing on some devices if both click and touch are supported
+    if (e.type === 'touchstart') {
+        e.preventDefault(); // Might prevent click emulation
+    }
+
     if (!envelope.classList.contains("open") && !isCounting) {
         startCountdown();
     } else if (envelope.classList.contains("open")) {
         // Replay confetti on click if already open
         burstConfetti(50);
     }
-});
+};
+
+envelope.addEventListener("click", handleInteraction);
+envelope.addEventListener("touchstart", handleInteraction, { passive: false });

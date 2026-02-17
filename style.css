@@ -4,19 +4,21 @@
   /* Palette - Elegant / Soft Blue & Gold */
   --bg-dark: #ebf4f5;
   --bg-light: #f8fbff;
-  
-  --primary: #3b82f6; /* Bright Royal Blue */
+
+  --primary: #3b82f6;
+  /* Bright Royal Blue */
   --primary-deep: #1e40af;
-  --accent: #f59e0b; /* Gold/Amber */
-  
+  --accent: #f59e0b;
+  /* Gold/Amber */
+
   --envelope-front: #ffffff;
   --envelope-back: #f3f4f6;
   --envelope-flap: #ffffff;
   --envelope-inside: #eff6ff;
-  
+
   --text-main: #1e293b;
   --text-muted: #64748b;
-  
+
   --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
@@ -29,12 +31,13 @@
 
 body {
   margin: 0;
-  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   font-family: var(--font-main);
   background: radial-gradient(circle at 50% 120%, #dbeafe, #eff6ff, #ffffff);
   color: var(--text-main);
-  perspective: 1500px; /* For 3D transforms */
+  perspective: 1500px;
+  /* For 3D transforms */
 }
 
 /* Canvas Background FX */
@@ -76,6 +79,7 @@ body {
 .gradient-text {
   background: linear-gradient(135deg, var(--primary), var(--primary-deep));
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -157,7 +161,8 @@ body {
   font-size: 2rem;
   font-weight: 700;
   color: var(--primary-deep);
-  font-family: 'Dancing Script', cursive; /* Optional script font */
+  font-family: 'Dancing Script', cursive;
+  /* Optional script font */
   letter-spacing: 0.05em;
 }
 
@@ -174,7 +179,7 @@ body {
   align-items: center;
   justify-content: center;
   transform: rotate(5deg);
-  box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
   color: var(--primary);
 }
 
@@ -189,14 +194,15 @@ body {
   clip-path: polygon(0 40%, 50% 65%, 100% 40%, 100% 100%, 0 100%);
   z-index: 10;
   border-radius: 12px;
-  pointer-events: none; /* Let clicks pass through to envelope */
+  pointer-events: none;
+  /* Let clicks pass through to envelope */
 }
 
 .front::after {
   content: '';
   position: absolute;
   inset: 0;
-  box-shadow: inset 0 -10px 20px rgba(0,0,0,0.05);
+  box-shadow: inset 0 -10px 20px rgba(0, 0, 0, 0.05);
   border-radius: 12px;
   pointer-events: none;
 }
@@ -214,14 +220,17 @@ body {
   border-radius: 12px;
   transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), z-index 0s 0.3s;
   transform-origin: top;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .flap::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.02), transparent 40%);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.02), transparent 40%);
 }
 
 .envelope.open .flap {
@@ -244,7 +253,7 @@ body {
   align-items: center;
   justify-content: center;
   z-index: 21;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   border: 2px solid #fcd34d;
   transition: transform 0.4s, opacity 0.4s;
 }
@@ -273,7 +282,8 @@ body {
 
 .envelope.open .letter {
   transform: translateX(-50%) translateY(-220px);
-  z-index: 15; /* Brings it above front */
+  z-index: 15;
+  /* Brings it above front */
   transition-delay: 0.4s;
 }
 
@@ -284,7 +294,7 @@ body {
   padding: 2rem;
   background: #fff;
   border-radius: 4px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   color: #334155;
@@ -340,7 +350,7 @@ body {
   height: 80px;
   background: white;
   padding: 4px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transform: rotate(3deg);
   flex-shrink: 0;
 }
@@ -388,7 +398,8 @@ body {
 .cake {
   position: absolute;
   left: 50%;
-  top: 70%; /* Start lower */
+  top: 70%;
+  /* Start lower */
   transform: translate(-50%, 0) scale(0);
   width: 150px;
   height: 120px;
@@ -398,7 +409,8 @@ body {
 }
 
 .envelope.open .cake {
-  top: 60%; /* Float up just below envelope or inside? Let's make it pop out below envelope or overlay */
+  top: 60%;
+  /* Float up just below envelope or inside? Let's make it pop out below envelope or overlay */
   /* Actually design calls for it to pop out. Let's make it appear in front of the envelope center */
   transform: translate(-50%, -40%) scale(1);
   opacity: 1;
@@ -416,7 +428,7 @@ body {
   height: 10px;
   background: #e2e8f0;
   border-radius: 50%;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .cake-body {
@@ -438,13 +450,15 @@ body {
 
 .layer-bottom {
   bottom: 0;
-  background: #fca5a5; /* Pink Sponge */
+  background: #fca5a5;
+  /* Pink Sponge */
   border-radius: 0 0 10px 10px;
 }
 
 .layer-middle {
   bottom: 35px;
-  background: #fecaca; /* Lighter Pink */
+  background: #fecaca;
+  /* Lighter Pink */
   height: 35px;
   border-radius: 5px 5px 0 0;
 }
@@ -457,7 +471,7 @@ body {
   height: 25px;
   background: #fff;
   border-radius: 15px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .icing::after {
@@ -510,13 +524,27 @@ body {
 }
 
 @keyframes flicker {
-  0% { transform: translateX(-50%) scale(1); opacity: 0.9; }
-  100% { transform: translateX(-50%) scale(1.1); opacity: 1; }
+  0% {
+    transform: translateX(-50%) scale(1);
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: translateX(-50%) scale(1.1);
+    opacity: 1;
+  }
 }
 
 @keyframes fadeInDown {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Countdown */
@@ -551,42 +579,63 @@ body {
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* Mobile Adjustments */
 @media (max-width: 600px) {
   .envelope {
-    height: 300px;
+    width: 90vw;
+    height: 280px;
   }
-  
+
   .letter {
     padding: 1rem;
   }
-  
+
+  .paper {
+    padding: 1.5rem;
+  }
+
   .top {
     flex-direction: column-reverse;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
   }
-  
+
   .text {
     text-align: center;
   }
-  
+
+  .recipient-name {
+    font-size: 1.5rem;
+  }
+
+  .body-text p {
+    font-size: 0.9rem;
+  }
+
   .photo-frame {
     width: 60px;
     height: 60px;
   }
-  
+
   .envelope.open .letter {
-    transform: translateX(-50%) translateY(-150px);
+    transform: translateX(-50%) translateY(-140px);
   }
-  
+
   .envelope.open .cake {
-     /* Move cake lower on mobile if needed */
-     bottom: -20px;
+    bottom: 10px;
+    transform: translate(-50%, -20%) scale(0.9);
   }
 }
